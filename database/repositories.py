@@ -1,9 +1,12 @@
-from venv import logger
 
-from .schema import User, Seller
-from sqlalchemy.ext.asyncio import AsyncSession
+import logging
+
 from sqlalchemy import Select, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from .schema import Seller, User
+
+logger = logging.getLogger('market_bot')
 
 class UserRepo:
     #инициализируем сессию, чтобы у нас для каждого была своя отдельная сессия
@@ -30,8 +33,8 @@ class SellerRepo(UserRepo):
     def __init__(self, session:AsyncSession) -> None:
         self.session = session
         
-    async def find_seller(self, tg_id:int):
-        seller = select(Seller).where(User.tg_id == tg_id)
+    async def find_seller(self):
+        seller = select(Seller).where(Seller.seller_id == User.id)
         result = await self.session.execute(seller)
         seller_obj = result.scalar_one_or_none()
         logger.info('Продавец найден')
