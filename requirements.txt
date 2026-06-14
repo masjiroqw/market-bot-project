@@ -21,3 +21,5 @@ sqlalchemy
 typing_extensions.py
 typing_inspection
 yarl
+alembic 
+psycopg2-binary

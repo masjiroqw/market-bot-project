@@ -4,7 +4,9 @@ import logging
 from sqlalchemy import Select, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .schema import Seller, User
+from database.schema import Product
+
+from .schema import Product, Seller, User
 
 logger = logging.getLogger('market_bot')
 
@@ -34,11 +36,14 @@ class SellerRepo(UserRepo):
         self.session = session
         
     async def find_seller(self):
-        seller = select(Seller).where(Seller.seller_id == User.id)
+        seller = select(Seller.seller_id).where(Seller.seller_id == User.id)
         result = await self.session.execute(seller)
-        seller_obj = result.scalar_one_or_none()
         logger.info('Продавец найден')
-        return seller_obj
+        return result.scalar_one_or_none()
+        
+  
+       
+        
     logger.info('Продавец не найден')
     
     #Сам написал!! Трудно конечно связи было продумать, но зато все из своей идеи!
@@ -54,6 +59,29 @@ class SellerRepo(UserRepo):
         await self.session.refresh(new_seller)
         logger.info('Продавец зарегистрирован')
         return new_seller
+    
+class ProductRepo(SellerRepo):
+    def __init__(self, session:AsyncSession) -> None:
+        self.session = session
+        
+    async def save_data(self, seller_id:int, product_name:str, 
+                        description:str, 
+                        currency:str, 
+                        price:int,
+                        photo_id:str):
+        data = Product(seller_id = seller_id,
+                       name = product_name, 
+                       description = description,
+                       currency = currency, 
+                       price = price,
+                       photo_id = photo_id)
+        self.session.add(data)
+        await self.session.commit()
+        await self.session.refresh(data)
+        return data
+
+ 
+    
 
 
     

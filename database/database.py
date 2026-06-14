@@ -1,20 +1,22 @@
 
 
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
-from sqlalchemy.orm import DeclarativeBase
-from dotenv import load_dotenv
-import os, asyncio
+import asyncio
+import os
 
+from dotenv import load_dotenv
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.orm import DeclarativeBase
 
 load_dotenv()
 
 class Base(DeclarativeBase):
     pass
 
-engine = create_async_engine(os.environ['DB_CONN'], pool_pre_ping=True)
+async_engine = create_async_engine(os.environ['DB_CONN'], pool_pre_ping=True)
 
 
-session = async_sessionmaker(engine, expire_on_commit=False, class_= AsyncSession)
+
+session = async_sessionmaker(async_engine, expire_on_commit=False, class_= AsyncSession)
 
 
 

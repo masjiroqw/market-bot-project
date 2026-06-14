@@ -59,51 +59,7 @@ async def dashboard(callback:CallbackQuery):
     await callback.answer()
     await callback.message.edit_text(text = 'Ваш личный кабинет 💼', reply_markup=seller_dashboard ) 
     
-    
-# @router.callback_query(F.data == 'create_product')
-# async def create_product_button(callback:CallbackQuery, state:FSMContext):
-#     logger.info('Вижу колбэк на создание товара')
-#     await state.set_state(CreateProduct.product_name)
-#     await callback.message.answer('Введите название товара')
-#     await callback.answer()
-    
 
-# @router.message(CreateProduct.product_name)
-# async def process_name(message:Message, state: FSMContext):
-#     await state.update_data(item_name = message.text)
-#     await state.set_state(CreateProduct.discription)
-#     await message.answer('Введите описание товара')
-
-
-# @router.message(CreateProduct.discription)
-# async def process_discroption(message:Message, state:FSMContext):
-#     await state.update_data(discription = message.text)
-#     await state.set_state(CreateProduct.currency)
-#     await message.answer('Выберите валюту', reply_markup=set_currency)
-    
-    
-# @router.callback_query(F.data == 'usdt')
-# async def process_currency_usdt(callback:CallbackQuery, state:FSMContext):
-#     await state.update_data(currency_usdt = callback.data)
-#     await state.set_state(CreateProduct.price)
-    
-#     await callback.message.answer('Введите цену товара')
-    
-# @router.callback_query(F.data == 'ton')
-# async def process_currency_ton(callback:CallbackQuery, state:FSMContext):
-#     await state.update_data(currency_ton = callback.data)
-#     await state.set_state(CreateProduct.price)
-#     await callback.message.answer('Введите цену товара')
-    
-    
-    
-# @router.message(CreateProduct.price)
-# async def process_price(message:Message, state:FSMContext):
-#     await state.update_data(price = message.text)
-#     data = await state.get_data()
-#     await message.answer(f'Информация о вашем товаре {data}')    
-    
-    
         
     
     
