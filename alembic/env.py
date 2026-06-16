@@ -6,8 +6,9 @@ import dotenv
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
-from database.database import Base
-from database.schema import CurrencyType, Product, Seller, User
+from database.schema import Base
+
+#from database.schema import CurrencyType, Product, Seller, User
 
 dotenv.load_dotenv()
 # this is the Alembic Config object, which provides

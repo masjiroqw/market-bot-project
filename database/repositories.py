@@ -39,11 +39,7 @@ class SellerRepo(UserRepo):
         seller = select(Seller.seller_id).where(Seller.seller_id == User.id)
         result = await self.session.execute(seller)
         logger.info('Продавец найден')
-        return result.scalar_one_or_none()
-        
-  
-       
-        
+        return result.scalar_one_or_none()  
     logger.info('Продавец не найден')
     
     #Сам написал!! Трудно конечно связи было продумать, но зато все из своей идеи!
@@ -64,7 +60,9 @@ class ProductRepo(SellerRepo):
     def __init__(self, session:AsyncSession) -> None:
         self.session = session
         
-    async def save_data(self, seller_id:int, product_name:str, 
+    async def save_data(self, product_tg_id:str, 
+                        seller_id:int, 
+                        product_name:str, 
                         description:str, 
                         currency:str, 
                         price:int,
@@ -74,12 +72,26 @@ class ProductRepo(SellerRepo):
                        description = description,
                        currency = currency, 
                        price = price,
-                       photo_id = photo_id)
+                       photo_id = photo_id, 
+                       product_tg_id = product_tg_id)
         self.session.add(data)
         await self.session.commit()
         await self.session.refresh(data)
         return data
+    
+    async def get_by_id(self, seller_id:int):
+        product_id = select(Product.id).where(Product.seller_id == seller_id)
+        result = await self.session.execute(product_id)
+        return result.scalars().all()
+    
+    async def show_product(self, product_id:int):
+        stmt = select(Product).where(Product.id == product_id)
+        result = await self.session.execute(stmt)
+        return result.scalar_one_or_none()
 
+    
+    
+        
  
     
 

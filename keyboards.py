@@ -22,3 +22,8 @@ set_currency = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text='USDT', callback_data='usdt')],
     [InlineKeyboardButton(text = 'TON', callback_data='ton')]
 ])
+
+
+skip_step = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text='Пропустить шаг', callback_data='skip')]
+])
